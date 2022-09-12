@@ -22,6 +22,9 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.postgresql:postgresql'
 
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 	// dev tools
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

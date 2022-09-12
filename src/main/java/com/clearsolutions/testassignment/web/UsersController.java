@@ -7,8 +7,9 @@ import com.clearsolutions.testassignment.web.dto.UserRegistrationDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("users")
@@ -18,8 +19,8 @@ public class UsersController {
     private final ModelMapper modelMapper;
 
     @PostMapping
-    @ResponseStatus(OK)
-    public UserDto createNewUser(@RequestBody UserRegistrationDto userRegistrationDto) {
+    @ResponseStatus(CREATED)
+    public UserDto createNewUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
         User createdUser = userService.create(userRegistrationDto);
         return modelMapper.map(createdUser, UserDto.class);
     }
