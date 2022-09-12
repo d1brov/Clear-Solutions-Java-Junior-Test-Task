@@ -22,4 +22,15 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 CONFLICT,
                 request);
     }
+
+    @ExceptionHandler(InvalidParametersException.class)
+    protected ResponseEntity<Object> badRequest(RuntimeException ex, WebRequest request) {
+        String bodyOfResponse = ex.getMessage();
+        return handleExceptionInternal(
+                ex,
+                bodyOfResponse,
+                new HttpHeaders(),
+                BAD_REQUEST,
+                request);
+    }
 }
