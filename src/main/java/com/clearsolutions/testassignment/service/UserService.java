@@ -14,18 +14,26 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User create(UserRegistrationDto userRegistrationDto) {
+
         String email = userRegistrationDto.getEmail();
+        // user with duplicate email check
         if(userRepository.findByEmail(email) != null) {
-            throw new UserAlreadyExistsException(String.format("User with email: '%s' already exists", email));
+            throw new UserAlreadyExistsException(String.format("User with same email: '%s' already exists", email));
+        }
+
+        String phone = userRegistrationDto.getPhone();
+        // user with duplicate phone check
+        if(phone != null && userRepository.findByPhone(phone) != null) {
+            throw new UserAlreadyExistsException(String.format("User with same phone: '%s' already exists", phone));
         }
 
         User userToSave = new User(
                 null,
-                userRegistrationDto.getEmail(),
+                email,
                 userRegistrationDto.getFirstName(),
                 userRegistrationDto.getLastName(),
                 userRegistrationDto.getBirthDate(),
-                userRegistrationDto.getPhoneNumber(),
+                phone,
                 userRegistrationDto.getAddress()
         );
         return userRepository.save(userToSave);

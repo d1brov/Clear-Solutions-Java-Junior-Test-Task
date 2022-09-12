@@ -30,7 +30,7 @@ public class User {
     private LocalDate birthDate;
 
     @Column(name = "phone")
-    private String phoneNumber;
+    private String phone;
 
     @Column(name = "address")
     private String address;
