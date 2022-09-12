@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.3'
 	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'java'
+	id 'org.flywaydb.flyway' version '9.1.5'
 }
 
 group = 'com.clearsolutions'
@@ -13,10 +14,29 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	// controller endpoints
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// persistence
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.postgresql:postgresql'
+
+	// dev tools
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// testing
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+flyway {
+	url = 'jdbc:postgresql://localhost:5432/db'	 // todo pull variables from properties file
+	user = 'admin'
+	password = 'admin'
+	cleanDisabled = false
 }
