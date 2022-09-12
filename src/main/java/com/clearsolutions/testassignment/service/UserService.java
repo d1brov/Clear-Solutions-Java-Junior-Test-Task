@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -18,6 +21,10 @@ public class UserService {
     public User create(UserRegistrationDto userRegistrationDto) {
         User userToSave = modelMapper.map(userRegistrationDto, User.class);
         return userRepository.save(userToSave);
+    }
+
+    public List<User> findInBirthdateRange(LocalDate fromDate, LocalDate tillDate) {
+        return userRepository.findInBirthdateRange(fromDate, tillDate);
     }
 
     public User delete(Integer id) {

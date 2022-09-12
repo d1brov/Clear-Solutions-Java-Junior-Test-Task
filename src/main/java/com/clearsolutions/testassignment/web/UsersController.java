@@ -2,12 +2,16 @@ package com.clearsolutions.testassignment.web;
 
 import com.clearsolutions.testassignment.persistence.model.User;
 import com.clearsolutions.testassignment.service.UserService;
+import com.clearsolutions.testassignment.web.dto.DateRangeDto;
 import com.clearsolutions.testassignment.web.dto.UserDto;
 import com.clearsolutions.testassignment.web.dto.UserRegistrationDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -21,14 +25,23 @@ public class UsersController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public UserDto createNewUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
+    UserDto createNewUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
         User createdUser = userService.create(userRegistrationDto);
         return modelMapper.map(createdUser, UserDto.class);
     }
 
+    @PostMapping("/findInBirthDateRange")
+    @ResponseStatus(OK)
+    List<UserDto> findByBirthDateRange(@Valid @RequestBody DateRangeDto dateRange) {
+        List<User> usersInRange = userService.findInBirthdateRange(dateRange.getFromDate(), dateRange.getTillDate());
+        return usersInRange.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(OK)
-    public UserDto deleteUserById(@PathVariable Integer id) {  // todo add validation for positive integer (1-Integer.MAX_SIZE)
+    UserDto deleteUserById(@PathVariable Integer id) {
         User deletedUser = userService.delete(id);
         return modelMapper.map(deletedUser, UserDto.class);
     }
