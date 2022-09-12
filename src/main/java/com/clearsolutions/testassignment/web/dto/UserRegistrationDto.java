@@ -2,18 +2,12 @@ package com.clearsolutions.testassignment.web.dto;
 
 import com.clearsolutions.testassignment.web.validation.MinimumAge;
 import com.clearsolutions.testassignment.web.validation.UniqueEmail;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class UserRegistrationDto {
     @NotBlank(message = "Email can't be empty")
     @Email(message = "Email must be valid")

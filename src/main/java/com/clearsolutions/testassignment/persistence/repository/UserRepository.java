@@ -2,11 +2,11 @@ package com.clearsolutions.testassignment.persistence.repository;
 
 import com.clearsolutions.testassignment.persistence.model.User;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
     User findByEmail(String email);
-    User findByPhone(String phone);
+    Optional<User> findById(Integer id);
     User save(User user);
-    List<User> findAll();
+    void delete(User user);
 }
