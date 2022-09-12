@@ -26,6 +26,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	// entity to DTO conversions
+	implementation 'org.modelmapper:modelmapper:3.1.0'
+
 	// testing
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
