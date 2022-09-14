@@ -4,9 +4,10 @@ import com.clearsolutions.testassignment.persistence.model.User;
 import com.clearsolutions.testassignment.service.UserService;
 import com.clearsolutions.testassignment.web.dto.DateRangeDto;
 import com.clearsolutions.testassignment.web.dto.UserDto;
-import com.clearsolutions.testassignment.web.dto.UserRegistrationDto;
+import com.clearsolutions.testassignment.web.dto.UserDataDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
@@ -24,25 +25,25 @@ public class UsersController {
     private final ModelMapper modelMapper;
 
     @PostMapping
-    @ResponseStatus(CREATED)
-    UserDto createNewUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
+    ResponseEntity<UserDto> createNewUser(@Valid @RequestBody UserDataDto userRegistrationDto) {
         User createdUser = userService.create(userRegistrationDto);
-        return modelMapper.map(createdUser, UserDto.class);
+        return new ResponseEntity<>(modelMapper.map(createdUser, UserDto.class), CREATED);
     }
 
-    @PostMapping("/findInBirthDateRange")
-    @ResponseStatus(OK)
-    List<UserDto> findByBirthDateRange(@Valid @RequestBody DateRangeDto dateRange) {
-        List<User> usersInRange = userService.findInBirthdateRange(dateRange.getFromDate(), dateRange.getTillDate());
-        return usersInRange.stream()
+    //GET http://localhost:8080/users/birthdate?from=1000-01-01&to=3000-01-01
+    @GetMapping("/birthdate")
+    ResponseEntity<List<UserDto>> findByRange(DateRangeDto dateRange) {
+        List<UserDto> usersInRange = userService
+                .findInBirthdateRange(dateRange)
+                .stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
+        return new ResponseEntity<>(usersInRange, OK);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(OK)
-    UserDto deleteUserById(@PathVariable Integer id) {
+    ResponseEntity<UserDto> deleteUserById(@PathVariable Integer id) {
         User deletedUser = userService.delete(id);
-        return modelMapper.map(deletedUser, UserDto.class);
+        return new ResponseEntity<>(modelMapper.map(deletedUser, UserDto.class), OK);
     }
 }
