@@ -14,10 +14,18 @@ import java.time.Period;
 public class MinimumAgeValidator implements ConstraintValidator<MinimumAge, LocalDate> {
 
     @Value("${user.age.minimum.years}")
-    private Integer minimumUserAgeYears;
+    private int minimumUserAgeYears;
 
     @Override
     public boolean isValid(final LocalDate birthDate, final ConstraintValidatorContext context) {
+
+        // skip if no age set
+        if (birthDate == null) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("{message.birthdate.notnull}").addConstraintViolation();
+            return true;
+        }
+
         int userAgeYears = Period.between(birthDate, LocalDate.now()).getYears();
         return userAgeYears >= minimumUserAgeYears;
     }
