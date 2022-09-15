@@ -14,6 +14,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
@@ -36,9 +37,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     private ResponseEntity<Object> onConstraintViolation(ConstraintViolationException ex, WebRequest request) {
-        List<String> errors = ex.getConstraintViolations().stream()
-                .map(ConstraintViolation::getMessage)
-                .collect(Collectors.toList());
+        List<String> errors = null;
+        if (ex.getConstraintViolations() != null) {
+            errors = ex.getConstraintViolations().stream()
+                    .map(ConstraintViolation::getMessage)
+                    .collect(Collectors.toList());
+        }
         return new ResponseEntity<>(new ErrorDto(errors), BAD_REQUEST);
     }
 
