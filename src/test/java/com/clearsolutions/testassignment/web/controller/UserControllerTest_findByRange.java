@@ -31,7 +31,7 @@ public class UserControllerTest_findByRange extends UserControllerTest{
      */
     @Disabled
     @Test
-    void with_validRange_foundUsers() throws Exception {
+    void findUsers_byValidRange_foundUsers() throws Exception {
         List<User> foundUsers = new ArrayList<>();
         foundUsers.add(getValidUser());
 

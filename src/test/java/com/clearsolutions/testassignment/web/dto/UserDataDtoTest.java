@@ -11,14 +11,14 @@ import static org.junit.Assert.assertThrows;
 
 class UserDataDtoTest {
     @Test
-    void with_emptyParametersMap() {
+    void initUserDataDto_withEmptyParametersMap_success() {
         UserDataDto userDataDto = new UserDataDto(new HashMap<>());
 
         assertThat(userDataDto).hasAllNullFieldsOrProperties();
     }
 
     @Test
-    void with_invalidParameterName() {
+    void initUserDataDto_withInvalidParameterNamesMap_fail() {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("email", "valid@mail.com");
         parameters.put("invalid", "parameter");
@@ -28,7 +28,7 @@ class UserDataDtoTest {
     }
 
     @Test
-    void with_validParameters() {
+    void initUserDataDto_withValidMap_success() {
         String emailFieldName = "email";
         String firstNameFieldName = "firstName";
         Map<String, String> parameters = new HashMap<>();

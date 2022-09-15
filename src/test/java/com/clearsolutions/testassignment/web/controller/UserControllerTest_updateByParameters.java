@@ -23,7 +23,7 @@ public class UserControllerTest_updateByParameters extends UserControllerTest{
     private final String baseUrl = "/users/3/update/parameters";
 
     @Test
-    void with_existingId_validParameters() throws Exception {
+    void updateUser_byExistingId_withValidParameters() throws Exception {
         String newEmail = "new_valid@email.com";
         UserDataDto updateDto = new UserDataDto();
         updateDto.setEmail(newEmail);
@@ -52,7 +52,7 @@ public class UserControllerTest_updateByParameters extends UserControllerTest{
     }
 
     @Test
-    void with_nonExistingUserId_validParameters() throws Exception {
+    void updateUser_byNonExistingId_withValidParameters() throws Exception {
         lenient().when(mockService.update(any(), any()))
                 .thenThrow(UserWithIdNotFoundException.class);
 
@@ -71,7 +71,7 @@ public class UserControllerTest_updateByParameters extends UserControllerTest{
     }
 
     @Test
-    void with_existingId_invalidParameters() throws Exception {
+    void updateUser_byExistingId_withInvalidParameters() throws Exception {
         lenient().when(mockService.update(any(), any()))
                 .thenThrow(ConstraintViolationException.class);
 
@@ -90,7 +90,7 @@ public class UserControllerTest_updateByParameters extends UserControllerTest{
     }
 
     @Test
-    void with_existingId_invalidParameterNames() throws Exception {
+    void updateUser_byExistingId_withInvalidParameterNames() throws Exception {
         String invalidParameterName = "eeeemail";
         String validParameterValue = "new@mail.com";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders

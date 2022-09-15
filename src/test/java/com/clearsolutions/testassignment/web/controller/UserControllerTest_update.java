@@ -24,7 +24,7 @@ public class UserControllerTest_update extends UserControllerTest{
     private final String baseUrl = "/users/3/update";
 
     @Test
-    void with_existingId_validUserDataDto() throws Exception {
+    void updateUser_byExistingId_withValid_userDataDto() throws Exception {
         String newEmail = "new_valid@email.com";
         UserDataDto updateDto = new UserDataDto();
         updateDto.setEmail(newEmail);
@@ -51,7 +51,7 @@ public class UserControllerTest_update extends UserControllerTest{
     }
 
     @Test
-    void with_nonExistingUserId_validUserDataDto() throws Exception {
+    void updateUser_byNonExistingId_withValid_userDataDto() throws Exception {
         lenient().when(mockService.update(any(), any()))
                 .thenThrow(UserWithIdNotFoundException.class);
 
@@ -69,7 +69,7 @@ public class UserControllerTest_update extends UserControllerTest{
     }
 
     @Test
-    void with_existingId_invalidUserDataDto() throws Exception {
+    void updateUser_byExistingId_withInvalid_userDataDto() throws Exception {
         lenient().when(mockService.update(any(), any()))
                 .thenThrow(ConstraintViolationException.class);
 

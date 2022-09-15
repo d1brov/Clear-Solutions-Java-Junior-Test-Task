@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 class UsersServiceTest_create extends UsersServiceTest {
 
     @Test
-    void with_validUserDataDto() {
+    void createUser_withValid_UserDataDto() {
         UserDataDto validUserDataDto = getValidUserDataDto();
         User user = getValidUser();
         when(mockUserRepository.save(any(User.class))).thenReturn(user);
@@ -26,7 +26,7 @@ class UsersServiceTest_create extends UsersServiceTest {
     }
 
     @Test
-    void with_invalidUserDto() {
+    void createUser_withInvalid_UserDto() {
         UserDataDto invalidUserDataDto = getInvalidUserDataDto();
 
         assertThrows(ConstraintViolationException.class, () ->

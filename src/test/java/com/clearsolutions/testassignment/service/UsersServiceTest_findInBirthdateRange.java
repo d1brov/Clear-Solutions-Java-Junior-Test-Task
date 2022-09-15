@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 class UsersServiceTest_findInBirthdateRange extends UsersServiceTest {
 
     @Test
-    void with_invalidDateRange() {
+    void findUsers_withInvalid_BDayDateRange() {
         LocalDate from = LocalDate.now().minusYears(1);
         LocalDate to = from.minusDays(1);
         DateRangeDto invalidDateRange = new DateRangeDto(from, to);
@@ -30,7 +30,7 @@ class UsersServiceTest_findInBirthdateRange extends UsersServiceTest {
     }
 
     @Test
-    void with_validDateRange_nothingFound() {
+    void findUsers_withInvalid_BDayDateRange_nothingFound() {
         LocalDate from = LocalDate.now().minusYears(1);
         LocalDate to = from.plusYears(1);
         DateRangeDto validDateRange = new DateRangeDto(from, to);
@@ -44,7 +44,7 @@ class UsersServiceTest_findInBirthdateRange extends UsersServiceTest {
     }
 
     @Test
-    void with_validDateRange() {
+    void findUsers_withValid_BDayDateRange_usersFound() {
         LocalDate from = LocalDate.now().minusYears(1);
         LocalDate to = from.plusYears(1);
         DateRangeDto validDateRange = new DateRangeDto(from, to);

@@ -19,7 +19,7 @@ public class UserControllerTest_deleteById extends UserControllerTest{
     private final String baseUrl = "/users/3";
 
     @Test
-    void with_existingId() throws Exception {
+    void deleteUser_byExisting_userId() throws Exception {
         User deletedUser = getValidUser();
 
         lenient().when(mockService.delete(any())).thenReturn(deletedUser);
@@ -39,7 +39,7 @@ public class UserControllerTest_deleteById extends UserControllerTest{
     }
 
     @Test
-    void with_nonExistingId() throws Exception {
+    void deleteUser_byNonExisting_userId() throws Exception {
         lenient().when(mockService.delete(any())).thenThrow(UserWithIdNotFoundException.class);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders

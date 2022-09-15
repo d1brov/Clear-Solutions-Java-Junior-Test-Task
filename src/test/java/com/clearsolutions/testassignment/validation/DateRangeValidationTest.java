@@ -29,7 +29,7 @@ class DateRangeValidationTest {
     }
 
     @Test
-    public void with_validRange() {
+    public void validate_validDateRange_success() {
         LocalDate from = LocalDate.now();
         LocalDate to = from.plusYears(3);
         DateRangeDto range = new DateRangeDto(from, to);
@@ -40,7 +40,7 @@ class DateRangeValidationTest {
     }
 
     @Test
-    public void with_fromAfterTo() {
+    public void validate_futureAfterPastDateRange_fail() {
         LocalDate from = LocalDate.now();
         LocalDate to = from.minusYears(3);
         DateRangeDto range = new DateRangeDto(from, to);
@@ -51,10 +51,9 @@ class DateRangeValidationTest {
     }
 
     @Test
-    public void with_fromNull() {
-        LocalDate from = null;
+    public void validate_nullFromDateRange_fail() {
         LocalDate to = LocalDate.now();
-        DateRangeDto range = new DateRangeDto(from, to);
+        DateRangeDto range = new DateRangeDto(null, to);
 
         Set<ConstraintViolation<DateRangeDto>> violations = validator.validate(range);
 
@@ -62,7 +61,7 @@ class DateRangeValidationTest {
     }
 
     @Test
-    public void with_toNull() {
+    public void validate_nullTillDateRange_fail() {
         LocalDate from = LocalDate.now();
         DateRangeDto range = new DateRangeDto(from, null);
 

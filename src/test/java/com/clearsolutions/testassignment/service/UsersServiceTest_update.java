@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 class UsersServiceTest_update extends UsersServiceTest {
 
     @Test
-    void with_nonExistingUserId() {
+    void updateUser_byNonExisting_UserId() {
         Integer nonExistingUserId = 3;
         when(mockUserRepository.findById(nonExistingUserId)).thenReturn(Optional.ofNullable(null));
 
@@ -26,7 +26,7 @@ class UsersServiceTest_update extends UsersServiceTest {
     }
 
     @Test
-    void with_validUserDataDto() {
+    void updateUser_withValid_UserDataDto() {
         Integer existingId = 3;
         UserDataDto validUserDataDto = getValidUserDataDto();
         User user = getValidUser();
@@ -39,7 +39,7 @@ class UsersServiceTest_update extends UsersServiceTest {
     }
 
     @Test
-    void with_invalidUserDataDto() {
+    void updateUser_withInvalid_UserDataDto() {
         Integer existingId = 3;
         UserDataDto invalidUserDataDto = getInvalidUserDataDto();
         when(mockUserRepository.findById(existingId)).thenReturn(Optional.of(new User()));

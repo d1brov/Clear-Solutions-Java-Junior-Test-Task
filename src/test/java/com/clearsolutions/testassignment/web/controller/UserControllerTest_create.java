@@ -21,7 +21,7 @@ public class UserControllerTest_create extends UserControllerTest{
     private final String baseUrl = "/users";
 
     @Test
-    void with_validUserDataDto() throws Exception {
+    void createUser_withValid_userDataDto() throws Exception {
         User createdUser = getValidUser();
         createdUser.setId(3);
         when(mockService.create(any(UserDataDto.class))).thenReturn(
@@ -45,7 +45,7 @@ public class UserControllerTest_create extends UserControllerTest{
     }
 
     @Test
-    void with_invalidUserDataDto() throws Exception {
+    void createUser_withInvalid_userDataDto() throws Exception {
         lenient().when(mockService.create(any()))
                 .thenThrow(ConstraintViolationException.class);
 

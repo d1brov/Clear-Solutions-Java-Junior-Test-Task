@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 class UsersServiceTest_delete extends UsersServiceTest {
 
     @Test
-    void with_existingUserId() {
+    void deleteUser_withExisting_UserId() {
         Integer existingUserId = 3;
         User user = getValidUser();
         user.setId(existingUserId);
@@ -27,7 +27,7 @@ class UsersServiceTest_delete extends UsersServiceTest {
     }
 
     @Test
-    void with_nonExistingUserId() {
+    void deleteUser_withNonExisting_UserId() {
         Integer nonExistingUserId = 3;
         when(mockUserRepository.findById(nonExistingUserId)).thenReturn(Optional.ofNullable(null));
 

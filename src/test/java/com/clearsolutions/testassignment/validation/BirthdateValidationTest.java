@@ -22,7 +22,7 @@ class BirthdateValidationTest {
     private Validator validator;
 
     @Test
-    public void with_matureAge() {
+    public void validate_matureAge_success() {
         LocalDate birthdate = LocalDate.now().minusYears(maturityAge).minusDays(1);
         User user = getValidUser();
         user.setBirthDate(birthdate);
@@ -33,7 +33,7 @@ class BirthdateValidationTest {
     }
 
     @Test
-    public void with_immatureAge() {
+    public void validate_immatureAge_fail() {
         LocalDate birthdate = LocalDate.now().minusYears(maturityAge).plusDays(1);
         User user = getValidUser();
         user.setBirthDate(birthdate);
@@ -44,7 +44,7 @@ class BirthdateValidationTest {
     }
 
     @Test
-    public void with_birthdateInFuture() {
+    public void validate_futureBday_fail() {
         LocalDate birthdate = LocalDate.now().plusDays(1);
         User user = getValidUser();
         user.setBirthDate(birthdate);
