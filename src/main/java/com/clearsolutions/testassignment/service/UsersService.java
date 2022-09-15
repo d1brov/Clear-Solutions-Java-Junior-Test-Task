@@ -2,28 +2,34 @@ package com.clearsolutions.testassignment.service;
 
 import com.clearsolutions.testassignment.persistence.model.User;
 import com.clearsolutions.testassignment.persistence.repository.UserRepository;
+import com.clearsolutions.testassignment.validation.order.ValidationGroupSequence;
 import com.clearsolutions.testassignment.web.util.UserMapper;
 import com.clearsolutions.testassignment.web.dto.DateRangeDto;
 import com.clearsolutions.testassignment.web.dto.UserDataDto;
 import com.clearsolutions.testassignment.web.exception.UserWithIdNotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.validation.*;
 import java.util.List;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
-public class UserService {
-
+public class UsersService {
     private final UserRepository userRepository;
     private final Validator validator;
-    private final UserMapper mapper;
+    private final UserMapper userMapper;
+
+    @Autowired
+    public UsersService(UserRepository userRepository, Validator validator) {
+        this.userRepository = userRepository;
+        this.validator = validator;
+        this.userMapper = Mappers.getMapper(UserMapper.class);
+    }
 
     public User create(UserDataDto userDataDto) {
         User userToSave = new User();
-        mapper.updateUserFromDto(userDataDto, userToSave);
+        userMapper.updateUserFromDto(userDataDto, userToSave);
         validate(userToSave);
         return userRepository.save(userToSave);
     }
@@ -39,7 +45,7 @@ public class UserService {
                 () -> new UserWithIdNotFoundException(id));
 
         // updating user from DTO
-        mapper.updateUserFromDto(userDataDto, updatingUser);
+        userMapper.updateUserFromDto(userDataDto, updatingUser);
 
         // validating user
         validate(updatingUser);
@@ -61,8 +67,8 @@ public class UserService {
     }
 
     private <T> void validate(T object) {
-        Set<ConstraintViolation<T>> constraintViolations = validator.validate(object);
-        if(constraintViolations.size() > 0) {
+        Set<ConstraintViolation<T>> constraintViolations = validator.validate(object, ValidationGroupSequence.class);
+        if (constraintViolations.size() > 0) {
             throw new ConstraintViolationException(constraintViolations);
         }
     }
