@@ -1,4 +1,4 @@
-package com.clearsolutions.testassignment.web.validation.configuration;
+package com.clearsolutions.testassignment.validation.configuration;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

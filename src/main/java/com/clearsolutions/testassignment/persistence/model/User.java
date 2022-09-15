@@ -1,14 +1,14 @@
 package com.clearsolutions.testassignment.persistence.model;
 
-import com.clearsolutions.testassignment.web.validation.MinimumAge;
-import lombok.*;
-
 import javax.persistence.*;
+import java.time.LocalDate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import java.time.LocalDate;
+import com.clearsolutions.testassignment.validation.Birthdate;
+import com.clearsolutions.testassignment.validation.order.Secondary;
+import lombok.*;
 
 @Entity
 @Table(name = "users")
@@ -24,7 +24,7 @@ public class User {
 
     @Column(name = "email", nullable = false)
     @NotBlank(message = "{message.email.notblank}")
-    @Email(message = "{message.email.format}")
+    @Email(message = "{message.email.format}", groups = Secondary.class)
     private String email;
 
     @Column(name = "first_name", nullable = false)
@@ -38,7 +38,7 @@ public class User {
     @Column(name = "birth_date", nullable = false)
     @NotNull(message = "{message.birthdate.notnull}")
     @Past(message = "{message.birthdate.past}")
-    @MinimumAge(message = "{message.minimum.age.years}")
+    @Birthdate(message = "{message.minimum.age.years}", groups = Secondary.class)
     private LocalDate birthDate;
 
     @Column(name = "phone")
