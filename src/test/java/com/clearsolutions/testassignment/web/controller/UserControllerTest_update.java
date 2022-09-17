@@ -1,88 +1,65 @@
 package com.clearsolutions.testassignment.web.controller;
 
 import com.clearsolutions.testassignment.persistence.model.User;
-import com.clearsolutions.testassignment.web.dto.UserDataDto;
-import com.clearsolutions.testassignment.web.dto.UserDto;
+import com.clearsolutions.testassignment.testingentities.TestingEntities;
 import com.clearsolutions.testassignment.web.exception.UserWithIdNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import javax.validation.ConstraintViolationException;
-
-import static com.clearsolutions.testassignment.testingentities.TestingEntities.getValidUser;
-import static com.clearsolutions.testassignment.testingentities.TestingEntities.getValidUserDataDto;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserControllerTest_update extends UserControllerTest{
-
-    private final String baseUrl = "/users/3/update";
+@WebMvcTest(UsersController.class)
+public class UserControllerTest_update extends UserControllerTest {
 
     @Test
-    void updateUser_byExistingId_withValid_userDataDto() throws Exception {
-        String newEmail = "new_valid@email.com";
-        UserDataDto updateDto = new UserDataDto();
-        updateDto.setEmail(newEmail);
+    void updateUser_byExistingId_withValidDto() throws Exception {
+        User validUser = TestingEntities.getValidUser();
+        Integer id = validUser.getId();
 
-        User updatedUser = getValidUser();
-        updatedUser.setEmail(newEmail);
-
-        when(mockService.update(any(Integer.class), any(UserDataDto.class)))
-                .thenReturn(updatedUser);
+        when(mockUserService.update(any(), any()))
+                .thenReturn(validUser);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .put(baseUrl)
-                .contentType(APPLICATION_JSON).content(jsonMapper.writeValueAsString(updateDto));
+                .put(baseUrl + "/" + id)
+                .contentType(APPLICATION_JSON)
+                .content("{}"); // valid json here
 
-        MockHttpServletResponse response = mvc.perform(request)
-                .andReturn()
-                .getResponse();
-
-        String contentAsString = response.getContentAsString();
-        UserDto returnedUserDto = jsonMapper.readValue(contentAsString, UserDto.class);
-
-        assertThat(response.getStatus()).isEqualTo(OK.value());
-        assertThat(returnedUserDto).usingRecursiveComparison().isEqualTo(updatedUser);
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id));
     }
 
     @Test
-    void updateUser_byNonExistingId_withValid_userDataDto() throws Exception {
-        lenient().when(mockService.update(any(), any()))
+    void updateUser_byNonExistingId_withValidDto() throws Exception {
+        when(mockUserService.update(any(), any()))
                 .thenThrow(UserWithIdNotFoundException.class);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .put(baseUrl)
+                .put(baseUrl + "/" + 3)
                 .contentType(APPLICATION_JSON)
-                .content(jsonMapper.writeValueAsString(getValidUserDataDto()));
+                .content("{}"); // valid json here
 
-        MockHttpServletResponse response = mvc.perform(request)
-                .andReturn()
-                .getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(NOT_FOUND.value());
-        // todo non empty error description check ?
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
     }
 
     @Test
-    void updateUser_byExistingId_withInvalid_userDataDto() throws Exception {
-        lenient().when(mockService.update(any(), any()))
+    void updateUser_byExistingId_withInvalidDto() throws Exception {
+        when(mockUserService.update(any(), any()))
                 .thenThrow(ConstraintViolationException.class);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .put(baseUrl)
+                .put(baseUrl + "/" + 3)
                 .contentType(APPLICATION_JSON)
-                .content("{some invalid UserDataDto JSON}");
+                .content("{}"); // valid json here
 
-        MockHttpServletResponse response = mvc.perform(request)
-                .andReturn()
-                .getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.value());
-        // todo non empty error description check ?
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
     }
 }
