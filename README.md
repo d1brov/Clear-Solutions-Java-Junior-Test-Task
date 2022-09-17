@@ -34,13 +34,13 @@ All subtasks of the assignment are completed.
 ## Endpoints
 - `POST /users` creates user with `DateRangeDto` request body. Returns `201 CREATED` and `UserDataDto` of created user.
 
-- `GET /users/birthdate?from=yyyy-MM-dd&to=yyyy-MM-dd` finds users with query parameters (it converts to `DateRangeDto` internally). Returns `200 OK` and list of `UserDataDto`.
+- `GET /users` finds users with query parameters (it converts to `DateRangeDto` internally). Returns `200 OK` and list of `UserDataDto`.
 
-- `PUT /users/{userId}/update` updates user by `userId` with `DateDataDto` in request body. Returns `200 OK` and updated `UserDataDto`.
+- `PUT /users/{userId}` updates user by `userId` with `DateDataDto` in request body. Returns `200 OK` and updated `UserDataDto`.
 
-- `PUT /users/{userId}/update/parameters?email=xxx&firstName=yyy&...` partly updates user by `userId` with querry parameters. Returns `200 OK` and updated `UserDataDto`.
+- `PATCH /users/{userId}` partly updates user by `userId` with JSON parameters. Returns `200 OK` and updated `UserDataDto`.
 
-- `DELETE /users/{userId}` deletes user by ID. Returns `200 OK` and deleted `UserDataDto`.
+- `DELETE /users/{userId}` deletes user by `userId`. Returns `200 OK` and deleted `UserDataDto`.
 
 ## DTOs
 
@@ -48,7 +48,7 @@ All subtasks of the assignment are completed.
 ```
 UserDataDto {
     "id": 28,
-    "email": "itsmaild@mail.com",       --required, validated email
+    "email": "itsmaild@mail.com",       - required, validated email
     "firstName": "Vasyl",               - required
     "lastName": "Petrovych",            - required
     "birthDate": "2000-09-14",          - required, can't be in future or less than `user.age.minimum.years`(validation.properties) value
@@ -58,13 +58,6 @@ UserDataDto {
 ```
 ---
 
-It is internal validated input DTO
-```
-DateRangeDto {
-    "from":"yyyy-MM-dd";        --required, from can't be after to and vice versa
-    "to":"from":"yyyy-MM-dd";   --required
-}
-```
 
 ### Output entities
 ```
@@ -74,15 +67,7 @@ UserDataDto {
 ```
 
 ## Validation
-Validation happens in Service layer by programmatical validator. For field `birthDate` and `DateRangeDto` entity created custom annotations. Validation properties and messages are externalized in `validation.properties` file in `resource` dir.
+Validation happens in Service layer programmatically. For field `birthDate` and birthdate range entity created custom annotations. Validation properties and messages are externalized in `validation.properties` file in `resource` dir.
 
 ## Exception handling
 All controller exceptions are handled by `@ControllerAdvice` exception handler. It translates internal exceptions in ResponseEntities with response codes
-
-## Testing
-I couldn't achieve 100% coverage due to some `MockMvc` flaws of `MockMvc`. Details in `findUsers_byValidRange_foundUsers()` test comments.
-Also had some problems with creating pure Unit tests without context-loaded properties. Need more experience in Spring.
-<details><summary>Testing stats</summary>
-
-![](/readme_images/testing_status.png)
-</details>
