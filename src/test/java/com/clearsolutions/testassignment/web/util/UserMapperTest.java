@@ -15,14 +15,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class UserMapperTest {
 
     @Autowired
-    UserMapper mapper;
+    private UserMapper mapper;
+//    public UserMapperTest() {
+//        this.mapper = Mappers.getMapper(UserMapper.class); // why not instantiating
+//    }
 
     @Test
     void updateEmptyUser_withDto() {
-        // given empty user
         User user = new User();
 
-        // given user dto with data
         UserDataDto userDto = new UserDataDto(
                 "its@mail.com",
                 "name",
@@ -31,10 +32,8 @@ class UserMapperTest {
                 null,
                 null);
 
-        // update user with dto
         mapper.updateUserFromDto(userDto, user);
 
-        // user updated all fields
         assertThat(user)
                 .usingRecursiveComparison()
                 .ignoringActualNullFields()
@@ -43,11 +42,9 @@ class UserMapperTest {
 
     @Test
     void updateUser_withDto() {
-        // given user
         User originalUser = getValidUser();
         User updUser = getValidUser();
 
-        // given user dto with data
         String updMail = "new@email.com";
         String updPhone = "new_phone";
         UserDataDto userDto = new UserDataDto(
@@ -58,10 +55,8 @@ class UserMapperTest {
                 updPhone,
                 null);
 
-        // update user with dto
         mapper.updateUserFromDto(userDto, updUser);
 
-        // user updated only non-null values
         assertThat(updUser).usingRecursiveComparison().ignoringFields("email", "phone").isEqualTo(originalUser);
         assertThat(updUser.getEmail()).isEqualTo(updMail);
         assertThat(updUser.getPhone()).isEqualTo(updPhone);
@@ -69,17 +64,13 @@ class UserMapperTest {
 
     @Test
     void updateUser_withEmptyDto() {
-        // given user
         User originalUser = getValidUser();
         User updUser = getValidUser();
 
-        // given empty user data dto
         UserDataDto userDto = new UserDataDto();
 
-        // update user with empty dto
         mapper.updateUserFromDto(userDto, updUser);
 
-        // user did not change
         assertThat(updUser).usingRecursiveComparison().isEqualTo(originalUser);
     }
 }

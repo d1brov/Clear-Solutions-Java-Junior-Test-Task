@@ -42,4 +42,17 @@ public class TestingEntities {
                 "NYC, 4121 Broadway"
         );
     }
+
+    public static User getInvalidUser() {
+        LocalDate immatureBirthday = LocalDate.now().minusYears(1);
+        return new User(
+                3,
+                "validmail.com",
+                "ValidName",
+                "",
+                immatureBirthday,
+                "+380000000000",
+                "NYC, 4121 Broadway"
+        );
+    }
 }

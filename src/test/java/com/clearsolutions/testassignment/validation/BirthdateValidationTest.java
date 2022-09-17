@@ -5,7 +5,6 @@ import com.clearsolutions.testassignment.validation.order.ValidationGroupSequenc
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.time.LocalDate;
@@ -18,7 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class BirthdateValidationTest {
     private final int maturityAge = 18;
 
-    @Autowired // should be autowired because of external constants in validator
+    @Autowired
     private Validator validator;
 
     @Test
