@@ -10,6 +10,9 @@ public interface UserMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
     void updateUserFromDto(UserDataDto userDataDto, @MappingTarget User user);
 
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+    User convertToUser(UserDataDto userDataDto);
+
     UserDto convertToDto(User user);
 
     UserDataDto convertToUserDataDto(User user);

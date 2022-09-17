@@ -1,7 +1,8 @@
 package com.clearsolutions.testassignment.web.dto;
 
-import com.clearsolutions.testassignment.validation.DateRange;
 import java.time.LocalDate;
+
+import com.clearsolutions.testassignment.validation.DateRange;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
